@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ShopAI | Fashion Store</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff8fc;
+            color: #222;
+        }
+
+        header {
+            background: #171017;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff8acb;
+        }
+
+        .cart {
+            font-size: 18px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background: linear-gradient(135deg, #ffe0f0, #f7d9ff);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .products {
+            padding: 50px 8%;
+        }
+
+        .products h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 35px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(220px, 1fr)
+            );
+            gap: 25px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px #00000010;
+        }
+
+        .product img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            margin: 15px 0 8px;
+        }
+
+        .price {
+            color: #d63384;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #a61e62;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #171017;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">ShopAI ✨</div>
+
+        <div class="cart">
+            🛒 Cart: <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Find Your Style</h1>
+        <p>Fashion meets AI. Discover your next favorite look.</p>
+    </section>
+
+    <section class="products">
+
+        <h2>Trending Fashion</h2>
+
+        <div class="product-grid">
+
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500"
+                     alt="Fashion outfit">
+
+                <h3>Classic Denim</h3>
+                <p class="price">₹1,499</p>
+
+                <button onclick="addToCart('Classic Denim', 1499)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=500"
+                     alt="Fashion dress">
+
+                <h3>Elegant Dress</h3>
+                <p class="price">₹1,999</p>
+
+                <button onclick="addToCart('Elegant Dress', 1999)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500"
+                     alt="Fashion handbag">
+
+                <h3>Chic Handbag</h3>
+                <p class="price">₹999</p>
+
+                <button onclick="addToCart('Chic Handbag', 999)">
+                    Add to Cart
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2026 ShopAI | Your Style, Your AI</p>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+
+        function addToCart(name, price) {
+            cartCount++;
+
+            document.getElementById("cart-count")
+                .innerText = cartCount;
+
+            alert(name + " added to your cart!");
+        }
+    </script>
+
+</body>
+</html>
