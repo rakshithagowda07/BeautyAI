@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ShopAI | Fashion Store</title>
+    <title>ShopAI | Beauty Store</title>
 
     <style>
         * {
@@ -16,53 +16,126 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #fff8fc;
-            color: #222;
+            background: #fff8fb;
+            color: #292129;
         }
 
         header {
-            background: #171017;
+            background: #21131e;
             color: white;
-            padding: 20px 8%;
+            padding: 18px 7%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #ff8acb;
+            color: #ff9acb;
         }
 
-        .cart {
-            font-size: 18px;
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .cart-button,
+        .ai-button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cart-button {
+            background: white;
+            color: #21131e;
+        }
+
+        .ai-button {
+            background: #e7549b;
+            color: white;
         }
 
         .hero {
             text-align: center;
-            padding: 70px 20px;
-            background: linear-gradient(135deg, #ffe0f0, #f7d9ff);
+            padding: 75px 20px;
+            background: linear-gradient(
+                135deg,
+                #ffe0ef,
+                #f5d9ff
+            );
         }
 
         .hero h1 {
-            font-size: 42px;
+            font-size: 44px;
             margin-bottom: 15px;
         }
 
         .hero p {
             font-size: 18px;
-            color: #555;
+            color: #6b5264;
+            margin-bottom: 25px;
         }
 
-        .products {
-            padding: 50px 8%;
+        .hero button {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .products h2 {
+        .shop {
+            padding: 45px 7%;
+        }
+
+        .shop h2 {
             text-align: center;
-            font-size: 30px;
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            display: block;
+            width: 100%;
+            max-width: 550px;
+            margin: 0 auto 25px;
+            padding: 15px;
+            border: 1px solid #e5cbd9;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-bottom: 35px;
+        }
+
+        .category-btn {
+            background: white;
+            color: #6b5264;
+            border: 1px solid #e8cbd9;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .category-btn.active {
+            background: #d63384;
+            color: white;
+            border-color: #d63384;
         }
 
         .product-grid {
@@ -76,83 +149,710 @@
 
         .product {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 15px #00000010;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px #0000000b;
+            transition: transform 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
         }
 
         .product img {
             width: 100%;
-            height: 220px;
+            height: 230px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 12px;
+            background: #f7eaf1;
         }
 
         .product h3 {
             margin: 15px 0 8px;
+            font-size: 18px;
+        }
+
+        .product .category-label {
+            color: #98758b;
+            font-size: 13px;
+            margin-bottom: 10px;
         }
 
         .price {
             color: #d63384;
             font-weight: bold;
+            font-size: 18px;
             margin-bottom: 15px;
         }
 
-        button {
+        .add-button {
+            width: 100%;
             background: #d63384;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .add-button:hover {
+            background: #a92368;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #98758b;
+            grid-column: 1 / -1;
+        }
+
+        /* Shopping cart */
+
+        .cart-section {
+            display: none;
+            padding: 35px 7%;
+            background: #fff0f7;
+        }
+
+        .cart-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .cart-item p {
+            margin-top: 6px;
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-controls button {
+            padding: 7px 12px;
+            border: none;
+            background: #f5d9e8;
+            border-radius: 6px;
             cursor: pointer;
         }
 
-        button:hover {
-            background: #a61e62;
+        .remove-button {
+            background: #fff0f0 !important;
+            color: #c0392b;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .checkout-button {
+            display: block;
+            margin: 20px 0 0 auto;
+            background: #21131e;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* AI assistant */
+
+        .ai-section {
+            display: none;
+            padding: 35px 7%;
+        }
+
+        .ai-box {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 20px #00000010;
+        }
+
+        .ai-box h2 {
+            margin-bottom: 10px;
+            color: #d63384;
+        }
+
+        .ai-box p {
+            color: #98758b;
+            margin-bottom: 15px;
+        }
+
+        .ai-messages {
+            background: #fff5fa;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 100px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .ai-message {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .ai-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-input-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 13px;
+            border: 1px solid #e5cbd9;
+            border-radius: 10px;
+        }
+
+        .ai-input-row button {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 13px 18px;
+            border-radius: 10px;
+            cursor: pointer;
         }
 
         footer {
+            background: #21131e;
+            color: white;
             text-align: center;
             padding: 25px;
-            background: #171017;
-            color: white;
             margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            header {
+                padding: 18px 5%;
+            }
+
+            .shop {
+                padding: 35px 5%;
+            }
+
+            .ai-input-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">ShopAI ✨</div>
+<header>
+    <div class="logo">ShopAI ✨</div>
 
-        <div class="cart">
-            🛒 Cart: <span id="cart-count">0</span>
+    <div class="header-actions">
+        <button class="ai-button" onclick="toggleAI()">
+            ✨ AI Beauty Assistant
+        </button>
+
+        <button class="cart-button" onclick="toggleCart()">
+            🛒 Cart (<span id="cart-count">0</span>)
+        </button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Your Beauty, Your Rules 💗</h1>
+
+    <p>
+        Discover skincare, makeup and beauty essentials
+        with ShopAI.
+    </p>
+
+    <button onclick="scrollToProducts()">
+        Shop Beauty
+    </button>
+</section>
+
+<!-- AI Assistant -->
+
+<section class="ai-section" id="ai-section">
+    <div class="ai-box">
+
+        <h2>✨ ShopAI Beauty Assistant</h2>
+
+        <p>
+            Tell us what beauty products you're looking for.
+        </p>
+
+        <div class="ai-messages" id="ai-messages">
+            <div class="ai-message">
+                <strong>ShopAI:</strong>
+                Hi! I'm your beauty shopping assistant.
+                Ask me about skincare, makeup or products!
+            </div>
         </div>
-    </header>
 
-    <section class="hero">
-        <h1>Find Your Style</h1>
-        <p>Fashion meets AI. Discover your next favorite look.</p>
-    </section>
+        <div class="ai-input-row">
+            <input
+                type="text"
+                id="ai-input"
+                placeholder="Ask about beauty products..."
+            >
 
-    <footer>
-        <p>© 2026 ShopAI | Your Style, Your AI</p>
-    </footer>
+            <button onclick="askAI()">Ask</button>
+        </div>
 
-    <script>
-        let cartCount = 0;
+    </div>
+</section>
 
-        function addToCart(name, price) {
-            cartCount++;
+<!-- Shopping Cart -->
 
-            document.getElementById("cart-count")
-                .innerText = cartCount;
+<section class="cart-section" id="cart-section">
 
-            alert(name + " added to your cart!");
+    <h2>🛒 Your Shopping Cart</h2>
+
+    <div id="cart-items"></div>
+
+    <div class="cart-total">
+        Total: ₹<span id="cart-total">0</span>
+    </div>
+
+    <button class="checkout-button" onclick="checkout()">
+        Proceed to Checkout
+    </button>
+
+</section>
+
+<!-- Products -->
+
+<section class="shop" id="shop">
+
+    <h2>Beauty Essentials 💄</h2>
+
+    <input
+        type="text"
+        class="search-box"
+        id="search"
+        placeholder="Search skincare, makeup, perfume..."
+        oninput="renderProducts()"
+    >
+
+    <div class="categories">
+
+        <button class="category-btn active"
+                onclick="setCategory('All', this)">
+            All
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Skincare', this)">
+            Skincare
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Makeup', this)">
+            Makeup
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Lip Care', this)">
+            Lip Care
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Hair Care', this)">
+            Hair Care
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Perfume', this)">
+            Perfume
+        </button>
+
+        <button class="category-btn"
+                onclick="setCategory('Accessories', this)">
+            Accessories
+        </button>
+
+    </div>
+
+    <div class="product-grid" id="product-grid"></div>
+
+</section>
+
+<footer>
+    <p>© 2026 ShopAI | Your Beauty, Your AI 💗</p>
+</footer>
+
+<script>
+
+    const products = [
+        {
+            id: 1,
+            name: "Gentle Face Cleanser",
+            category: "Skincare",
+            price: 399,
+            image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"
+        },
+        {
+            id: 2,
+            name: "Hydrating Moisturizer",
+            category: "Skincare",
+            price: 599,
+            image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500"
+        },
+        {
+            id: 3,
+            name: "Glow Face Serum",
+            category: "Skincare",
+            price: 799,
+            image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=500"
+        },
+        {
+            id: 4,
+            name: "Daily Sunscreen SPF 50",
+            category: "Skincare",
+            price: 499,
+            image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=500"
+        },
+        {
+            id: 5,
+            name: "Velvet Matte Lipstick",
+            category: "Makeup",
+            price: 349,
+            image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500"
+        },
+        {
+            id: 6,
+            name: "Soft Pink Blush",
+            category: "Makeup",
+            price: 449,
+            image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500"
+        },
+        {
+            id: 7,
+            name: "Everyday Makeup Kit",
+            category: "Makeup",
+            price: 999,
+            image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500"
+        },
+        {
+            id: 8,
+            name: "Liquid Eyeliner",
+            category: "Makeup",
+            price: 299,
+            image: "https://images.unsplash.com/photo-1631214524020-4a4b2f4a0b1a?w=500"
+        },
+        {
+            id: 9,
+            name: "Lip Repair Balm",
+            category: "Lip Care",
+            price: 199,
+            image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=500"
+        },
+        {
+            id: 10,
+            name: "Glossy Lip Tint",
+            category: "Lip Care",
+            price: 299,
+            image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500"
+        },
+        {
+            id: 11,
+            name: "Nourishing Hair Mask",
+            category: "Hair Care",
+            price: 549,
+            image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=500"
+        },
+        {
+            id: 12,
+            name: "Signature Perfume",
+            category: "Perfume",
+            price: 1299,
+            image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=500"
+        },
+        {
+            id: 13,
+            name: "Beauty Brush Set",
+            category: "Accessories",
+            price: 699,
+            image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500"
+        },
+        {
+            id: 14,
+            name: "Makeup Organizer",
+            category: "Accessories",
+            price: 499,
+            image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500"
         }
-    </script>
+    ];
+
+    let cart = [];
+    let selectedCategory = "All";
+
+    function renderProducts() {
+        const grid = document.getElementById("product-grid");
+        const search = document
+            .getElementById("search")
+            .value.toLowerCase();
+
+        grid.innerHTML = "";
+
+        const filtered = products.filter(product => {
+            const matchesCategory =
+                selectedCategory === "All" ||
+                product.category === selectedCategory;
+
+            const matchesSearch =
+                product.name.toLowerCase().includes(search) ||
+                product.category.toLowerCase().includes(search);
+
+            return matchesCategory && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML =
+                '<p class="empty-message">No products found.</p>';
+            return;
+        }
+
+        filtered.forEach(product => {
+            const card = document.createElement("div");
+            card.className = "product";
+
+            card.innerHTML = `
+                <img src="${product.image}"
+                     alt="${product.name}"
+                     loading="lazy">
+
+                <h3>${product.name}</h3>
+
+                <p class="category-label">
+                    ${product.category}
+                </p>
+
+                <p class="price">₹${product.price}</p>
+
+                <button class="add-button"
+                        onclick="addToCart(${product.id})">
+                    Add to Cart
+                </button>
+            `;
+
+            grid.appendChild(card);
+        });
+    }
+
+    function setCategory(category, button) {
+        selectedCategory = category;
+
+        document.querySelectorAll(".category-btn")
+            .forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+
+        renderProducts();
+    }
+
+    function addToCart(id) {
+        const product = products.find(item => item.id === id);
+
+        const existing = cart.find(item => item.id === id);
+
+        if (existing) {
+            existing.quantity++;
+        } else {
+            cart.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        updateCart();
+
+        alert(product.name + " added to your cart!");
+    }
+
+    function updateCart() {
+        const count = cart.reduce(
+            (sum, item) => sum + item.quantity,
+            0
+        );
+
+        const total = cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+
+        document.getElementById("cart-count").innerText = count;
+        document.getElementById("cart-total").innerText = total;
+
+        const container = document.getElementById("cart-items");
+
+        container.innerHTML = "";
+
+        if (cart.length === 0) {
+            container.innerHTML =
+                "<p>Your cart is empty. Start shopping!</p>";
+        }
+
+        cart.forEach(item => {
+            const row = document.createElement("div");
+            row.className = "cart-item";
+
+            row.innerHTML = `
+                <div>
+                    <strong>${item.name}</strong>
+                    <p>₹${item.price * item.quantity}</p>
+                </div>
+
+                <div class="quantity-controls">
+                    <button onclick="changeQuantity(${item.id}, -1)">
+                        −
+                    </button>
+
+                    <span>${item.quantity}</span>
+
+                    <button onclick="changeQuantity(${item.id}, 1)">
+                        +
+                    </button>
+
+                    <button class="remove-button"
+                            onclick="removeFromCart(${item.id})">
+                        Remove
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(row);
+        });
+    }
+
+    function changeQuantity(id, change) {
+        const item = cart.find(item => item.id === id);
+
+        if (!item) return;
+
+        item.quantity += change;
+
+        if (item.quantity <= 0) {
+            removeFromCart(id);
+            return;
+        }
+
+        updateCart();
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        updateCart();
+    }
+
+    function toggleCart() {
+        const section = document.getElementById("cart-section");
+
+        section.style.display =
+            section.style.display === "block"
+                ? "none"
+                : "block";
+
+        updateCart();
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+    function scrollToProducts() {
+        document.getElementById("shop")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        alert(
+            "Your cart is ready! Checkout and payment " +
+            "will be added in a future update."
+        );
+    }
+
+    function toggleAI() {
+        const section = document.getElementById("ai-section");
+
+        section.style.display =
+            section.style.display === "block"
+                ? "none"
+                : "block";
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+
+    function askAI() {
+        const input = document.getElementById("ai-input");
+        const messages = document.getElementById("ai-messages");
+
+        const question = input.value.trim();
+
+        if (!question) return;
+
+        const userMessage = document.createElement("div");
+        userMessage.className = "ai-message";
+
+        userMessage.innerHTML =
+            "<strong>You:</strong> " +
+            question.replace(/</g, "&lt;");
+
+        messages.appendChild(userMessage);
+
+        const reply = document.createElement("div");
+        reply.className = "ai-message";
+
+        reply.innerHTML =
+            "<strong>ShopAI:</strong> " +
+            "I'm currently a demo assistant! " +
+            "Try browsing our skincare, makeup and beauty " +
+            "products. My real AI connection will be added soon.";
+
+        messages.appendChild(reply);
+
+        input.value = "";
+
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    renderProducts();
+    updateCart();
+
+</script>
 
 </body>
 </html>
